@@ -9,7 +9,7 @@ void print_buffer(char buffer[], int *buff_ind);
  */
 int _print(const char *format, ...)
 {
-	int i, printed = 0, printed_char = 0;
+	int i, printed = 0, printed_chars = 0;
 	int flags, width, precision, size, buff_ind = 0;
 	va_list list;
 	char buffer[BUFF_SIZE];
@@ -17,9 +17,9 @@ int _print(const char *format, ...)
 	if (format == NULL)
 		return (-1);
 
-	va_start(lisy format);
+	va_start(list, format);
 
-	for (i = 0, format && format[i] != '\0'; i++)
+	for (i = 0;format && format[i] != '\0'; i++)
 	{
 		if (format[i] != '%')
 		{
@@ -34,7 +34,7 @@ int _print(const char *format, ...)
 			print_buffer(buffer, &buff_ind);
 			flags = get_flags(format, &i);
 			width = get_width(format, &i, list);
-			preciosius = get_precision(format, &i, list);
+			precision = get_precision(format, &i, list);
 			size = get_size(format, &i);
 			++i;
 			printed = handle_print(format, &i, list, buffer,
@@ -49,18 +49,18 @@ int _print(const char *format, ...)
 
 	va_end(list);
 
-	return (printed_char);
+	return (printed_chars);
 }
 
 /**
  * print_buffer - print the contents of the buffer if exist
  * @buffer: Array of chars
  * @buff-ind: Index at which to add next char, represent the lenth.
- * Return: return o,
+ * Return: return 0,
  */
-void print_buffer(char buffer[], int *buff_ind);
+void print_buffer(char buffer[], int *buff_ind)
 {
-	if (buff_ind > 0)
+	if (*buff_ind > 0)
 		write(1, &buffer[0], *buff_ind);
 	*buff_ind = 0;
 }
